@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+# database 연동 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_root?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: user_root
+    password: 9490Pkym!
+  thymeleaf:
+    cache: false
+
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      # update: db값 고정,  create: 실행마다 ddl 초기화
