@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>update</title>
+</head>
+<body>
+<form action="/board/update" method="post"> <!--enctype="multipart/form-data"-->
+    <input type="hidden" name="id" th:value="${boardUpdate.id}">
+    <input type="hidden" name="boardType" th:value="${boardUpdate.boardType}">
+    <input type="hidden" name="memberEmail" th:value="${boardUpdate.memberEmail}">
+    작성자: <input type="text" name="memberName" th:value="${boardUpdate.memberName}" readonly><br>
+    제목: <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}"> <br>
+    내용: <textarea name="boardContent" cols="30" rows="10" th:value="${boardUpdate.boardContent}"></textarea> <br>
+    <!--file: <input type="file" name="boardFile"> <br>-->
+    <input type="hidden" name="boardView" th:value="${boardUpdate.boardView}">
+    <input type="submit" value="수정하기">
+</form>
+</body>
+</html>

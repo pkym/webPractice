@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>detail</title>
+</head>
+<body>
+    <!--버튼목록-->
+    <button onclick="listReq()">커뮤니티</button>
+    <!--해당 이메일에 해당할 때만 수정/삭제버튼 나오게하기-->
+    <div th:if="${session.loginEmail == board.memberEmail}">
+    <button onclick="updateReq()">수정하기</button>
+    <button onclick="deleteReq()">삭제하기</button>
+    </div>
+    <!--상세 글 내용-->
+    <div th:text="${board.id}"></div>
+    <div th:text="${board.boardTitle}"></div>
+    <div th:text="${board.boardType}"></div>
+    <div th:text="${board.memberName}"></div>
+    조회수 <div th:text="${board.boardView}"></div>
+    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <div th:text="${board.boardContent}"></div><br>
+
+
+</body>
+<script th:inline="javascript">
+    /** 커뮤니티로 돌아가기 */
+    function listReq(){
+        location.href="/board/";
+    }
+    /** 글 수정하기 */
+    function updateReq(){
+        const id = [[${board.id}]];
+        location.href="/board/update/"+id;
+        //기본 get방식
+    }
+    /** 글 삭제하기 */
+    function deleteReq(){
+        const id = [[${board.id}]];
+        location.href="/board/delete/"+id;
+    }
+
+
+</script>
+
+</html>

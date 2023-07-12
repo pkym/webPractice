@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>write</title>
+</head>
+<body>
+<form action="/board/save" method="post"> <!--enctype="multipart/form-data"-->
+    <input type="hidden" name="memberEmail" th:value="${session.loginEmail}">
+    작성자: <input type="text" name="memberName" th:value="${session.loginName}" readonly><br>
+    제목: <input type="text" name="boardTitle"> <br>
+    내용: <textarea name="boardContent" cols="30" rows="10"></textarea> <br>
+    <!--file: <input type="file" name="boardFile"> <br>-->
+    <input type="submit" value="글작성">
+</form>
+</body>
+</html>

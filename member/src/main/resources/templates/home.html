@@ -5,12 +5,12 @@
     <title>home</title>
 </head>
 <body>
-/** 관리자 로그인 시 회원목록 관리 */
+<!--관리자 로그인 시 회원목록 관리 -->
  <div th:if="${session.loginEmail == 'a'}">
      <h2>관리자님 환영합니다</h2>
      <a href="/member/">회원목록 관리하기</a><br>
  </div>
-/** 일반 로그인 시 환영 */
+<!-- 일반 로그인 시 환영 -->
  <div th:unless="${session.loginEmail == 'a'}">
      <!--<p th:text="${session.loginEmail}"></p> 님 환영합니다-->
      <p th:text="${session.loginName}"></p> 님 환영합니다
@@ -21,5 +21,33 @@
  <a href="/member/logout">로그아웃 하기</a>
 </div>
 
+<button onclick="saveReq()">글쓰기</button>
+<button onclick="listReq()">커뮤니티</button>
+
+
+<div th:each="board: ${boardList}">
+    <div th:text="${board.id}"></div>
+    <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
+    <div th:text="${board.boardType}"></div>
+    <div th:text="${board.memberName}"></div>
+    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <div th:text="${board.boardContent}"></div><br>
+    <div th:text="${board.boardView}"></div><br>
+    <hr>
+</div>
+
 </body>
+
+
+<script>
+    function saveReq(){
+        location.href = "/board/save";
+    }
+
+    function listReq(){
+        location.href = "/board/";
+    }
+
+</script>
 </html>

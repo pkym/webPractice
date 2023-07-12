@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>list</title>
+</head>
+<body>
+<a href="/home">home</a>
+  <div th:each="board: ${boardList}">
+    <div th:text="${board.id}"></div>
+    <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
+    <div th:text="${board.boardType}"></div>
+    <div th:text="${board.memberName}"></div>
+    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <div th:text="${board.boardContent}"></div><br>
+    <div th:text="${board.boardView}"></div><br>
+    <hr>
+  </div>
+
+
+</body>
+</html>

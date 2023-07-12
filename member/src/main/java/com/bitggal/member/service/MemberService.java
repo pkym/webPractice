@@ -74,7 +74,7 @@ public class MemberService {
         }
     }
 
-    /** 회원 정보 수정 form 메소드 */
+    /** 회원 정보 수정화면 출력 메소드 */
     public MemberDTO updateForm(String myEmail){
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(myEmail);
         if(optionalMemberEntity.isPresent()){
@@ -84,10 +84,10 @@ public class MemberService {
         }
     }
 
-    /** 회원 정보 수정 메소드 */
+    /** 회원 정보 수정 반영 메소드 */
     public void update(MemberDTO memberDTO){
+        // Id 있으면 update 쿼리를 작성해줌
         memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
-                // Id 있으면 update 쿼리를 작성해줌
     }
 
     /** 회원 삭제 메소드 */
