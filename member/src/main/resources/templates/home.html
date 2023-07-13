@@ -3,51 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>home</title>
+    <style>
+
+    </style>
 </head>
 <body>
+     <p style="display: block" th:text="${session.loginName}"></p>
 <!--관리자 로그인 시 회원목록 관리 -->
- <div th:if="${session.loginEmail == 'a'}">
-     <h2>관리자님 환영합니다</h2>
-     <a href="/member/">회원목록 관리하기</a><br>
+ <div style="margin-bottom: 20px" th:if="${session.loginEmail == 'a'}">
+     <button onclick="memberReq()">관리자페이지</button>
+     <button onclick="boardReq()">커뮤니티</button>
  </div>
-<!-- 일반 로그인 시 환영 -->
- <div th:unless="${session.loginEmail == 'a'}">
-     <!--<p th:text="${session.loginEmail}"></p> 님 환영합니다-->
-     <p th:text="${session.loginName}"></p> 님 환영합니다
- </div>
-
-<div>
- <a href="/member/update">내 정보 수정하기</a>
- <a href="/member/logout">로그아웃 하기</a>
+<div style="margin-bottom: 20px" th:unless="${session.loginEmail == 'a'}">
+    <button onclick="updateReq()">마이페이지</button>
+    <button onclick="boardReq()">커뮤니티</button>
 </div>
-
-<button onclick="saveReq()">글쓰기</button>
-<button onclick="listReq()">커뮤니티</button>
-
-
+<div>
+    <button onclick="boardReq()">더보기</button>
 <div th:each="board: ${boardList}">
-    <div th:text="${board.id}"></div>
+    <div style="display: none" th:text="${board.id}"></div>
     <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
     <div th:text="${board.boardType}"></div>
-    <div th:text="${board.memberName}"></div>
+    <div style="display:block" th:text="${board.memberName}"></div>
+    <div style="display:block" th:text="${board.memberEmail}"></div>
     <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
     <!--내용은 나중에 한줄만 나오도록 설정해주기-->
     <div th:text="${board.boardContent}"></div><br>
     <div th:text="${board.boardView}"></div><br>
     <hr>
 </div>
+</div>
 
 </body>
 
 
 <script>
-    function saveReq(){
-        location.href = "/board/save";
+    function updateReq(){
+        location.href="/member/update";
     }
-
-    function listReq(){
+    function memberReq(){
+        location.href="/member/";
+    }
+    function boardReq(){
         location.href = "/board/";
     }
+
 
 </script>
 </html>

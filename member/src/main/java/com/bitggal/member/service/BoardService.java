@@ -35,7 +35,14 @@ public class BoardService {
         return boardDTOList;
     }
     /** 일부글 가져오기 메소드*/
-    //
+    public List<BoardDTO> findfive(){
+        List<BoardEntity> boardEntityList = boardRepository.findTopFive();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for(BoardEntity boardEntity: boardEntityList){
+            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+        }
+        return boardDTOList;
+    }
 
     /** 조회 수 증가 메소드 */
     @Transactional

@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>detail</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 <body>
     <!--버튼목록-->
+    <button onclick="homeReq()">홈</button>
     <button onclick="listReq()">커뮤니티</button>
     <!--해당 이메일에 해당할 때만 수정/삭제버튼 나오게하기-->
     <div th:if="${session.loginEmail == board.memberEmail}">
@@ -13,18 +16,66 @@
     <button onclick="deleteReq()">삭제하기</button>
     </div>
     <!--상세 글 내용-->
-    <div th:text="${board.id}"></div>
-    <div th:text="${board.boardTitle}"></div>
-    <div th:text="${board.boardType}"></div>
-    <div th:text="${board.memberName}"></div>
-    조회수 <div th:text="${board.boardView}"></div>
-    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
-    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <div>
+    <div style="display: none" th:text="${board.id}"></div>
+    <h2 th:text="${board.boardTitle}"></h2>
+    <span th:text="${board.boardType}"></span> *
+    <span th:text="${board.memberName}"></span><br>
+    <span th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
     <div th:text="${board.boardContent}"></div><br>
+    조회수<span th:text="${board.boardView}"></span>
+    </div>
+
+<div id="cmtWrite">
+    <input type="text" id="memberName" th:value="${board.memberName}" readonly>
+    <input type="text" id="cmtContent" placeholder="내용">
+    <button id="cmtButton" onclick="cmtWrite()">댓글작성</button>
+</div>
+
+<div id="cmtList">
+    <div th:each="cmt: ${cmtList}">
+        <p th:text="${cmt.memberName}">
+        <p th:text="${cmt.cmtContent}">
+        <p th:text="${cmt.cmtDate}">
+
+</div>
 
 
 </body>
 <script th:inline="javascript">
+    const cmtWrite = () => {
+        const memberName = document.getElementById("memberName").value;
+        const content = document.getElementById("cmtContent").value;
+        const id = [[${board.id}]];
+        $.ajax({
+            //요청방식: post, /cmt/save, 요청데이터: 작성자, 작성내용, 게시글번호
+            type: "post",
+            url: "/cmt/save",
+            data:{
+                "memberName": memberName,
+                "cmtContent": content,
+                "boardId": id
+            },
+            success: function(res){
+                console.log("요청성공", res);
+                let output = "<div>";
+                for(let i in res){
+                    output += "<p>"+res[i].memberName+"</p>";
+                    output += "<p>"+res[i].cmtContent+"</p>";
+                    output += "<p>"+res[i].cmtDate+"</p>";
+                }
+                output +="</div>"
+                document.getElementById('cmtList').innerHTML = output;
+                document.getElementById('memberName').value='';
+                document.getElementById('cmtContent').value='';
+
+            },
+            error: function (err){
+                console.log("요청실패", err);
+            }
+        });
+    }
+
     /** 커뮤니티로 돌아가기 */
     function listReq(){
         location.href="/board/";
@@ -37,8 +88,12 @@
     }
     /** 글 삭제하기 */
     function deleteReq(){
-        const id = [[${board.id}]];
+        const id = [[${board.id}]];동
         location.href="/board/delete/"+id;
+    }
+    /** 홈 화면으로 이동 */
+    function homeReq(){
+        location.href = "/home";
     }
 
 

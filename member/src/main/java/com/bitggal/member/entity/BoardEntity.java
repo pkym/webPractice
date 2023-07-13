@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // DB 의 테이블 역할을 하는 클래스
 @Entity
@@ -38,8 +40,12 @@ public class BoardEntity extends BaseEntity{
     @Column
     private String memberName;
 
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CmtEntity> cmtEntityList = new ArrayList<>();
+
     public static BoardEntity toSaveEntity(BoardDTO boardDTO){
         BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardType(boardDTO.getBoardType());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContent(boardDTO.getBoardContent());
         boardEntity.setBoardView(0);

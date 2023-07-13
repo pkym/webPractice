@@ -29,7 +29,7 @@ public class BoardDTO {
         boardDTO.setBoardContent(boardEntity.getBoardContent());
         // boardfile 자리
         boardDTO.setBoardView(boardEntity.getBoardView());
-        // email 은 가져오지않았음
+        boardDTO.setMemberEmail(boardEntity.getMemberEmail());
         boardDTO.setMemberName(boardEntity.getMemberName());
         boardDTO.setBoardDate(boardEntity.getBoardDate());
         return boardDTO;

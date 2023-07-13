@@ -49,7 +49,7 @@ public class MemberController {
         return "member/login";
     }
 
-    /** 로그인 페이지에서 값을 DTO에 담아보내고 해당회원정보 받아오기 */
+    /** 로그인 후 메인페이지로 이동(해당회원 이메일 세선 저장 및 게시글 5개 출력) */
     @PostMapping("/member/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session, Model model){
         MemberDTO loginResult = memberService.login(memberDTO);
@@ -59,7 +59,7 @@ public class MemberController {
             session.setAttribute("loginName", loginResult.getMemberName());
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             // 2. 게시글 보여주기
-            List<BoardDTO> boardDTOList = boardService.findAll();
+            List<BoardDTO> boardDTOList = boardService.findfive();
             model.addAttribute("boardList", boardDTOList);
             return "home";
         }else{
@@ -68,41 +68,49 @@ public class MemberController {
         }
     }
 
-    /** 전체 회원 페이지 출력요청 */
+    /** 관리자 페이지 출력요청 */
     @GetMapping("/member/")
     public String findAll(Model model){
         List<MemberDTO> memberDTOList = memberService.findAll();
         // html 로 가져갈 데이터있다면 model 사용
         model.addAttribute("memberList", memberDTOList);
-        return "member/list";
+        return "member/admin";
     }
-    /** 회원상세보기 출력요청 */
+    /** 관리자 페이지 회원상세보기 출력요청 */
     @GetMapping("/member/{id}")
     public String findById(@PathVariable Long id, Model model){
         // PathVariable: 경로상의 값 가져올 때 사용
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
-        return "member/detail";
+        return "member/admindetail";
     }
-    /** 회원수정하기 출력요청 */
+    /** 관리자 페이지 회원삭제하기 요청 */
+    @GetMapping("/member/remove/{id}")
+    public String deleteById(@PathVariable Long id){
+        memberService.deleteById(id);
+        return "redirect:/member/";
+    }
+    /** 마이페이지 회원수정하기 출력요청 */
     @GetMapping("/member/update")
     public String updateForm(HttpSession session, Model model){
         String myEmail = (String)session.getAttribute("loginEmail");
         MemberDTO memberDTO = memberService.updateForm(myEmail);
         model.addAttribute("updateMember", memberDTO);
-        return "member/update";
+        return "member/mypage";
     }
-    /** 회원 수정하기 페이지에서 값을 받아 상세보기 페이지로 이동 */
+    /** 마이페이지 회원수정 후 상세보기 페이지로 이동 */
     @PostMapping("/member/update")
     public String update(@ModelAttribute MemberDTO memberDTO){
         memberService.update(memberDTO);
         return "redirect:/member/"+memberDTO.getId();
     }
-    /** 회원삭제하기 요청 */
+    /** 회원탈퇴하기 요청*/
     @GetMapping("/member/delete/{id}")
-    public String deleteById(@PathVariable Long id){
+    public String deleteById(@PathVariable Long id, HttpSession session){
+        System.out.println("탈퇴합니다" + id);
         memberService.deleteById(id);
-        return "redirect:/member/";
+        session.invalidate();
+        return "redirect:/";
     }
     /** 로그아웃하기 요청 */
     @GetMapping("/member/logout")

@@ -90,10 +90,15 @@ public class MemberService {
         memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
     }
 
-    /** 회원 삭제 메소드 */
+    /** 회원 삭제, 탈퇴 메소드 */
     public void deleteById(Long id){
         memberRepository.deleteById(id);
     }
+
+    /** 회원 탈퇴 메소드 */
+    /*public void deleteByEmail(String loginEmail){
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.deleteByMemberEmail(loginEmail);
+    }*/
 
 
 

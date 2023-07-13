@@ -7,6 +7,13 @@
 <body>
 <form action="/board/save" method="post"> <!--enctype="multipart/form-data"-->
     <input type="hidden" name="memberEmail" th:value="${session.loginEmail}">
+    <label for="type">게시판 선택</label>
+    <select name="boardType" id="type">
+        <option value="자유게시판">자유게시판</option>
+        <option value="잘문&답변">질문&답변</option>
+        <option value="육아">육아</option>
+        <option value="제보/알림">제보/알림</option>
+    </select>
     작성자: <input type="text" name="memberName" th:value="${session.loginName}" readonly><br>
     제목: <input type="text" name="boardTitle"> <br>
     내용: <textarea name="boardContent" cols="30" rows="10"></textarea> <br>

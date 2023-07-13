@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,8 +21,9 @@ public class MemberEntity {
     private String memberEmail;
     @Column
     private String memberPw;
-    @Column
+    @Column(unique = true)
     private String memberName;
+
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO){
         MemberEntity memberEntity = new MemberEntity();

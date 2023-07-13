@@ -18,8 +18,8 @@ public class BaseEntity{
     @Column
     private LocalDateTime boardDate;
 
-    //@UpdateTimestamp
-    //@Column(insertable = false)
-    //private LocalDateTime boardUpdatedTime;
+    @CreationTimestamp
+    @Column
+    private LocalDateTime cmtDate;
 
 }

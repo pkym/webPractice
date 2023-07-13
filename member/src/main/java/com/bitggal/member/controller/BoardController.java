@@ -1,7 +1,9 @@
 package com.bitggal.member.controller;
 
 import com.bitggal.member.dto.BoardDTO;
+import com.bitggal.member.dto.CmtDTO;
 import com.bitggal.member.service.BoardService;
+import com.bitggal.member.service.CmtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CmtService cmtService;
     /** 글쓰기 페이지 요청 */
     @GetMapping("/save")
     public String saveForm(HttpSession session){
@@ -39,12 +42,16 @@ public class BoardController {
 
     /** 글 상세 목록 요청하기 */
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model,HttpSession session){
+    public String findById(@PathVariable Long id, Model model, HttpSession session){
         // 해당 게시글의 조회수를 하나 올리고
-        // 게시글 데이터를 가져와서 detail.html에 출력
         boardService.updateView(id);
+        // 게시글 데이터를 가져와서 detail.html에 출력
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
+        // 댓글 목록 가져오기
+        List<CmtDTO> cmtDTOList = cmtService.findAll(id);
+        model.addAttribute("cmtList", cmtDTOList);
+
         return "board/detail";
     }
 
@@ -62,7 +69,7 @@ public class BoardController {
     public String update(@ModelAttribute BoardDTO boardDTO, Model model){
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board",board);
-        // 아니면 detail.html 로 바로 이동하기
+        // 아니면 admindetail.html 로 바로 이동하기
         return "redirect:/board/" + boardDTO.getId();
     }
 
