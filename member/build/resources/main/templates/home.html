@@ -8,29 +8,36 @@
     </style>
 </head>
 <body>
-     <p style="display: block" th:text="${session.loginName}"></p>
+     <div style="display: block" th:text="${session.loginName}"></div>
 <!--관리자 로그인 시 회원목록 관리 -->
- <div style="margin-bottom: 20px" th:if="${session.loginEmail == 'a'}">
-     <button onclick="memberReq()">관리자페이지</button>
+ <div style="margin-bottom: 20px; " th:if="${session.loginEmail == 'a'}">
      <button onclick="boardReq()">커뮤니티</button>
+     <button onclick="memberReq()">관리자페이지</button>
+     <button onclick="logout()">로그아웃하기</button>
  </div>
 <div style="margin-bottom: 20px" th:unless="${session.loginEmail == 'a'}">
-    <button onclick="updateReq()">마이페이지</button>
     <button onclick="boardReq()">커뮤니티</button>
+    <button onclick="updateReq()">마이페이지</button>
 </div>
-<div>
-    <button onclick="boardReq()">더보기</button>
+<div style="margin:20px 0px; ">
+    <h3 style="display: inline">지금 인기있는 게시글</h3><a style="text-decoration: none" href="/board/"> 더보기</a><br>
+    <hr style="border: 1px solid lightgray">
+
+</div>
+    <div style="margin-bottom: 10px">
 <div th:each="board: ${boardList}">
-    <div style="display: none" th:text="${board.id}"></div>
-    <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
-    <div th:text="${board.boardType}"></div>
-    <div style="display:block" th:text="${board.memberName}"></div>
-    <div style="display:block" th:text="${board.memberEmail}"></div>
+    <div style="display: none">
+    <div th:text="${board.id}"></div>
+    <div th:text="${board.memberEmail}"></div>
     <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
-    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <div th:text="${board.boardType}"></div> *
     <div th:text="${board.boardContent}"></div><br>
     <div th:text="${board.boardView}"></div><br>
-    <hr>
+    </div>
+    <div><a style="text-decoration: none" th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
+    <div th:text="${board.memberName}"></div>
+    <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+    <hr style="border: 1px solid lightgray">
 </div>
 </div>
 
@@ -38,14 +45,22 @@
 
 
 <script>
+
+    /** 마이페이지(수정,삭제,탈퇴)로 이동 */
     function updateReq(){
         location.href="/member/update";
     }
+    /** 관리자페이지(회원수정,삭제)로 이동 */
     function memberReq(){
         location.href="/member/";
     }
+    /** 커뮤니티 페이지로 이동 */
     function boardReq(){
         location.href = "/board/";
+    }
+    /** 관리자 로그아웃하기 */
+    function logout(){
+        location.href="/member/logout"
     }
 
 

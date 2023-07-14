@@ -49,6 +49,7 @@ public class BoardService {
     public void updateView(Long id){
         boardRepository.updateView(id);
     }
+
     /** 글 하나 조회 메소드 및 글 수정화면 출력 메소드 */
     public BoardDTO findById(Long id){
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);

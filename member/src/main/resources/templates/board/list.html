@@ -25,7 +25,7 @@
 <button onclick="saveReq()">글쓰기</button>
 </div>
 
-<div class="tabContainer">
+<div style = "margin-bottom: 30px" class="tabContainer">
   <button id="tab1" onclick="showTab('tabC1')">전체</button>
   <button id="tab2" onclick="showTab('tabC2')">자유게시판</button>
   <button id="tab3" onclick="showTab('tabC3')">질문&답변</button>
@@ -36,40 +36,55 @@
 <div id="tabC1" class="tab-content" style="display:block;">
   <div th:each="board: ${boardList}">
     <div style="display:none" th:text="${board.id}"></div>
-    <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
-    <div style="display:inline" th:text="${board.boardType}"></div>*
-    <div th:text="${board.memberName}"></div>
-    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+    <hr style="border: 1px solid lightgray">
+    <h3><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></h3>
+    <div style="display:inline; font-size: 10px;" th:text="${board.boardType}"></div> *
+    <div style="display:inline; font-size: 10px;" th:text="${board.memberName}"></div> *
+    <div style="display:inline; font-size: 10px;" th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
     <!--내용은 나중에 한줄만 나오도록 설정해주기-->
-    <div th:text="${board.boardContent}"></div><br>
-    <div th:text="${board.boardView}"></div><br>
-    <hr>
+    <h4 th:text="${board.boardContent}"></h4><br>
+    조회수<span th:text="${board.boardView}"></span><br>
   </div>
 </div>
 <div id="tabC2" class="tab-content" style="display:block;">
   <div th:each="board: ${boardList}">
     <div th:if="${board.boardType}=='자유게시판'">
     <div style="display:none" th:text="${board.id}"></div>
-    <div><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></div><br>
-    <div style="display:inline" th:text="${board.boardType}"></div>*
-    <div th:text="${board.memberName}"></div>
-    <div th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+    <hr style="border: 1px solid lightgray">
+    <h3><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></h3>
+    <div style="display:inline; font-size: 10px;" th:text="${board.boardType}"></div>*
+    <div style="display:inline; font-size: 10px;" th:text="${board.memberName}"></div>*
+    <div style="display:inline; font-size: 10px;" th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
     <!--내용은 나중에 한줄만 나오도록 설정해주기-->
-    <div th:text="${board.boardContent}"></div><br>
-    <div th:text="${board.boardView}"></div><br>
-    <hr>
+    <h4 th:text="${board.boardContent}"></h4><br>
+    조회수<span th:text="${board.boardView}"></span><br>
+    </div>
+  </div>
+</div>
+<div id="tabC3" class="tab-content" style="display:block;">
+  <div th:each="board: ${boardList}">
+    <div th:if="${board.boardType}=='질문&답변'">
+      <div style="display:none" th:text="${board.id}"></div>
+      <hr style="border: 1px solid lightgray">
+      <h3><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></h3>
+      <div style="display:inline; font-size: 10px;" th:text="${board.boardType}"></div> *
+      <div style="display:inline; font-size: 10px;" th:text="${board.memberName}"></div> *
+      <div style="display:inline; font-size: 10px;" th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></div><br>
+      <!--내용은 나중에 한줄만 나오도록 설정해주기-->
+      <h4 th:text="${board.boardContent}"></h4><br>
+      조회수<span th:text="${board.boardView}"></span><br>
     </div>
   </div>
 </div>
 </body>
 
 <script>
-  /** 글 쓰기 */
+  /** 글 쓰기 요청*/
   function saveReq(){
     location.href = "/board/save";
   }
 
-  /** 홈 화면으로 이동 */
+  /** 홈 화면으로 이동 요청 */
   function homeReq(){
     location.href = "/home";
   }

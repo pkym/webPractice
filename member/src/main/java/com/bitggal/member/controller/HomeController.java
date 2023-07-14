@@ -23,7 +23,7 @@ public class HomeController {
     /** 다시 홈으로 돌아가는 요청 메소드 */
     @GetMapping("/home")
     public String  homepage(Model model){
-        List<BoardDTO> boardDTOList = boardService.findAll();
+        List<BoardDTO> boardDTOList = boardService.findfive();
         model.addAttribute("boardList", boardDTOList);
         return "home";
     }

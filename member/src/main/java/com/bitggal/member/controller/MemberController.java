@@ -55,7 +55,7 @@ public class MemberController {
         MemberDTO loginResult = memberService.login(memberDTO);
         if(loginResult !=null){
             // 로그인 성공시 홈 페이지로 이동
-            // 1. 세션에 로그인 정보 담기
+            // 1. 세션에 로그인 정보 담기d
             session.setAttribute("loginName", loginResult.getMemberName());
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             // 2. 게시글 보여주기
@@ -90,7 +90,7 @@ public class MemberController {
         memberService.deleteById(id);
         return "redirect:/member/";
     }
-    /** 마이페이지 회원수정하기 출력요청 */
+    /** 마이페이지 정보수정하기 출력요청 */
     @GetMapping("/member/update")
     public String updateForm(HttpSession session, Model model){
         String myEmail = (String)session.getAttribute("loginEmail");

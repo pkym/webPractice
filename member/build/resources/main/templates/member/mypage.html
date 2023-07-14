@@ -5,6 +5,8 @@
     <title>mypage</title>
 </head>
 <body>
+<button onclick="logout()">로그아웃하기</button>
+<button onclick="withdraw()">탈퇴하기</button>
 <form action="/member/update" method="post">
     <input type="hidden" th:value="${updateMember.id}" name="id"><br>
     이메일: <input type="text" th:value="${updateMember.memberEmail}" name="memberEmail" readonly><br>
@@ -12,14 +14,16 @@
     이름: <input type="text" th:value="${updateMember.memberName}" name="memberName"><br>
     <input type="submit" value="수정하기">
 </form>
-<button onclick="logout()">로그아웃하기</button>
-<button onclick="withdraw()">탈퇴하기</button>
 </body>
 
 <script th:inline="javascript">
+
+    /** 로그아웃 요청 */
     function logout(){
       location.href="/member/logout"
     }
+
+    /** 회원탈퇴 요청 */
     function withdraw(){
       const id = [[${updateMember.id}]];
       location.href="/member/delete/" + id;

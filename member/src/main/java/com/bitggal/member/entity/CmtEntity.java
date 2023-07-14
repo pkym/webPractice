@@ -39,5 +39,12 @@ public class CmtEntity extends BaseEntity {
         return cmtEntity;
     }
 
+    public static CmtEntity toDeleteEntity(Long id, BoardEntity boardEntity){
+        CmtEntity cmtEntity = new CmtEntity();
+        cmtEntity.setId(id);
+        cmtEntity.setBoardEntity(boardEntity);
+        return cmtEntity;
+    }
+
 
 }

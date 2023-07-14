@@ -11,41 +11,52 @@
     <button onclick="homeReq()">홈</button>
     <button onclick="listReq()">커뮤니티</button>
     <!--해당 이메일에 해당할 때만 수정/삭제버튼 나오게하기-->
-    <div th:if="${session.loginEmail == board.memberEmail}">
+    <div th:if="${session.loginEmail == board.memberEmail || session.loginEmail == 'a'}">
     <button onclick="updateReq()">수정하기</button>
     <button onclick="deleteReq()">삭제하기</button>
     </div>
     <!--상세 글 내용-->
     <div>
-    <div style="display: none" th:text="${board.id}"></div>
-    <h2 th:text="${board.boardTitle}"></h2>
+    <div style="display:none" th:text="${board.id}"></div>
+    <h3 th:text="${board.boardTitle}"></h3>
     <span th:text="${board.boardType}"></span> *
     <span th:text="${board.memberName}"></span><br>
-    <span th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
-    <div th:text="${board.boardContent}"></div><br>
-    조회수<span th:text="${board.boardView}"></span>
+    <span style="font-size: 10px" th:text="*{#temporals.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+    <h4 th:text="${board.boardContent}"></h4><br>
+        조회수 <span th:text="${board.boardView}"></span>
+        댓글수 <span th:text="${cmtList.size()}"></span>
     </div>
 
+    <!--로그인 했을 때만 댓글 남길수 있도록 추후 수정-->
 <div id="cmtWrite">
-    <input type="text" id="memberName" th:value="${board.memberName}" readonly>
+    <input type="text" id="memberName" th:value="${session.loginName}" readonly>
     <input type="text" id="cmtContent" placeholder="내용">
     <button id="cmtButton" onclick="cmtWrite()">댓글작성</button>
 </div>
-
+    <!-- 댓글 목록-->
 <div id="cmtList">
     <div th:each="cmt: ${cmtList}">
-        <p th:text="${cmt.memberName}">
-        <p th:text="${cmt.cmtContent}">
-        <p th:text="${cmt.cmtDate}">
-
+        <span th:text="${cmt.id}" th:id="cmtId"></span>
+        <span style="display: inline-block; width:100px" th:text="${cmt.memberName}" id="cmtName"></span>
+        <span style="display: inline-block; width:200px"th:text="${cmt.cmtContent}" id="cmt"></span>
+        <span style="font-size:10px" th:text="${cmt.cmtDate}"></span>
+         <!-- 댓글 닉네임이 session정보와 일치할 때만 버튼 나오게하기-->
+            <span th:if="${session.loginName == cmt.memberName || session.loginName == '관리자'}">
+            <button type="button" id="modal_open_btm">수정하기</button>
+            <button th:onclick="|javascript:deleteCmt('${cmt.id}')|">삭제하기</button>
+            </span>
+    </div>
 </div>
 
-
 </body>
+
+
 <script th:inline="javascript">
+
+    /** 댓글 작성 후 불러오기 요청*/
     const cmtWrite = () => {
         const memberName = document.getElementById("memberName").value;
-        const content = document.getElementById("cmtContent").value;
+        const cmtContent = document.getElementById("cmtContent").value;
         const id = [[${board.id}]];
         $.ajax({
             //요청방식: post, /cmt/save, 요청데이터: 작성자, 작성내용, 게시글번호
@@ -53,16 +64,19 @@
             url: "/cmt/save",
             data:{
                 "memberName": memberName,
-                "cmtContent": content,
+                "cmtContent": cmtContent,
                 "boardId": id
             },
             success: function(res){
                 console.log("요청성공", res);
                 let output = "<div>";
                 for(let i in res){
-                    output += "<p>"+res[i].memberName+"</p>";
-                    output += "<p>"+res[i].cmtContent+"</p>";
-                    output += "<p>"+res[i].cmtDate+"</p>";
+                    output += "<span>"+res[i].memberName+"</span>";
+                    output += "<span>"+res[i].cmtContent+"</span>";
+                    output += "<span style='font-size: 10px'>"+res[i].cmtDate+"</span>";
+                    output += "<button onclick=\"updateCmt()\">수정하기</button>";
+                    output += "<button onclick=\"deleteCmt()\">삭제하기</button>";
+                    output += "<br>";
                 }
                 output +="</div>"
                 document.getElementById('cmtList').innerHTML = output;
@@ -76,25 +90,50 @@
         });
     }
 
-    /** 커뮤니티로 돌아가기 */
+    /** 댓글 삭제 요청 */
+    function deleteCmt(id){
+        //const id = document.getElementById('cmtId').innerHTML;
+        console.log("댓글아이디"+id);
+        $.ajax({
+            type: "get",
+            url: "/cmt/delete/"+id,
+
+            success: function(){
+                alert("댓글이 삭제되었습니다");
+                location.reload();
+            },
+            error: function (err){
+                console.log("요청실패", err);
+            }
+        });
+
+
+    }
+
+    /** 커뮤니티로 돌아가기 요청 */
     function listReq(){
         location.href="/board/";
     }
-    /** 글 수정하기 */
+    /** 글 수정 요청 */
     function updateReq(){
         const id = [[${board.id}]];
         location.href="/board/update/"+id;
         //기본 get방식
     }
-    /** 글 삭제하기 */
+    /** 글 삭제 요청  */
     function deleteReq(){
-        const id = [[${board.id}]];동
+        const id = [[${board.id}]];
         location.href="/board/delete/"+id;
     }
-    /** 홈 화면으로 이동 */
+    /** 홈 화면으로 이동 요청*/
     function homeReq(){
         location.href = "/home";
     }
+    /** 댓글 수정 요청 */
+    function updateCmt(){
+
+    }
+
 
 
 </script>

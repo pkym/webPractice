@@ -19,7 +19,6 @@ public class CmtService {
     private final BoardRepository boardRepository;
 
     /** 원글에 댓글저장하기 메소드 */
-
     public Long save(CmtDTO cmtDTO){
         // 부모 엔티티 조회
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(cmtDTO.getBoardId());
@@ -33,7 +32,6 @@ public class CmtService {
     }
 
     /** 원글에 댓글불러오기 메소드 */
-
     public List<CmtDTO> findAll(Long boardId){
         BoardEntity boardEntity =boardRepository.findById(boardId).get();
         List<CmtEntity> cmtEntityList = cmtRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
@@ -45,5 +43,14 @@ public class CmtService {
         }
         return cmtDTOList;
     }
+
+    /** 댓글 삭제하기 메소드 */
+    public void delete(Long id){
+        cmtRepository.deleteById(id);
+        System.out.println("삭제가 되었습니다!!!!!22222"+id);
+
+    }
+
+
 
 }
